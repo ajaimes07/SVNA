@@ -1,0 +1,74 @@
+' Author:   Aline Jaimes
+' Date:     08/13/2019
+' Project:  SVNA Weather Stations
+' Goal:     Use instruments manufactured thresholds to identify flags and outliers in weather data sets
+'======= Thresholds ==========
+'        VARIABLE  Min Max
+'   BP_kPa_Avg      <0 >100
+'   Rain_mm_Tot     <0
+'   WS_ms_S_WVT     <0
+'   WindDir_D1_WVT  <0  >360
+'   WS_ms_Avg       <0
+'   SwUp_Avg
+'   SwDn_Avg
+'   LwUp_Avg
+'   LwDn_Avg
+'   CNR4TC_Avg
+'   CNR4TK_Avg
+'   RsNet_Avg
+'   RlNet_Avg
+'   Albedo_Avg
+'   Rn_Avg
+'   LwUpCorr_Avg
+'   LwDnCorr_Avg
+'   VWC_Avg         <0
+'   EC_Avg
+'   ST_Avg          <0  >100
+'   VWC_2_Avg
+'   EC_2_Avg
+'   ST_2_Avg        <0  >100
+'   VWC_3_Avg
+'   EC_3_Avg
+'   ST_3_Avg        <0  >100
+'   AirTC_Avg       <0  >100
+'   RH              <0  >100
+'   WS2_ms_S_WVT    <0
+'   WindDir_D2_WVT  <0  >360
+' ===============================
+
+Sub SVNA_WS_DataClean():
+Dim I As Long
+Dim j As Long
+Dim lastrow As Long
+Dim lastcol As Long
+Dim ws1 As Worksheet
+Dim ws2 As Worksheet
+Dim ws3 As Worksheet
+
+Set ws1 = Sheets("ReadMetStation")
+Set ws2 = Sheets("MartinMetStation")
+Set ws3 = Sheets("SonoraMetStation")
+lastrow = ws1.Range("A" & Rows.Count).End(xlUp).Row
+lastcol = ws1.Cells(1, ws1.Columns.Count).End(xlToLeft).Column
+   ' Loop through all rows
+  For I = 5 To lastrow
+    ' Loop through all columns
+    For j = 3 To 36
+      ' If the value of a cell is less than 0, format highlight cell
+      If ws1.Cells(I, j).Value < 0 Then
+      Cells(I, j).Interior.ColorIndex = 45 ' 5 indicates Blue Color
+        If ws1.Cells(I, j).Value < 0 Then
+           ws1.Cells(I, j).Value = "NAN"
+        End If
+      End If
+   
+    Next j
+
+  Next I
+
+  ' Show the summary of dates parameter found below trheshold
+'  MsgBox (BPACount = " BPACount")
+ ' MsgBox (RainACount = " RainACount")
+
+
+End Sub
